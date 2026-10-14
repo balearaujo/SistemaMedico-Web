@@ -17,7 +17,7 @@ Este repositorio contiene el proyecto de Programación de Sistemas Web para la g
 3. PRUEBAS DE SEGURIDAD
    De acuerdo con los requisitos de seguridad planteados, estos son los casos de prueba previstos para validar la protección del sistema:
 
-   | ID Prueba | Escenario a probar | Resultado Esperado |
+| ID Prueba | Escenario a probar | Resultado Esperado |
 | :--- | :--- | :--- |
 | **SEC-01** | Un usuario intenta iniciar sesión con contraseña incorrecta 5 veces seguidas. | El sistema bloquea temporalmente la cuenta y deniega el acceso. |
 | **SEC-02** | La secretaria intenta acceder mediante la URL a la ruta de emitir receta médica. | El sistema rechaza la petición por falta de permisos (Control de acceso por rol). |
