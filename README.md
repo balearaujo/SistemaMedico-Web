@@ -1,6 +1,8 @@
 SISTEMA WEB DE RECETAS MEDICAS
+
 Este repositorio contiene el proyecto de Programación de Sistemas Web para la gestión rápida y eficiente de recetas médicas y expedientes de pacientes.
 1. DISEÑO DE ARQUITECTURA Y SEPARACIÓN DE RESPONSABILIADES
+
    Para este proyecto utilizaremos una arquitectura basada en el patrón MVC (Modelo-Vista-Controlador) implementada a través de una API REST. La separción de responsabilidades será la siguiente:
    * Modelos: Se encargarán exclusivamente de la conexión a la base de datos MySQL usando sentencias preparadas para evitar inyección SQL. Tendremos modelos como `PacienteModel` (para registrar y buscar pacientes), `CitaModel` (agenda) y `RecetaModel` (manejará la lógica para separar recetas de medicamentos controlados de las generales).
    * Controladores: Contendrán la lógica de negocio. Por ejemplo, el `RecetaController` recibirá los datos, validará la información y ordenará la creación del PDF; el `AuthController` validará los inicios de sesión y bloqueará la cuenta tras 5 intentos fallidos.
