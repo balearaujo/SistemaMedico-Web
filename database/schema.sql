@@ -105,8 +105,19 @@ CREATE TABLE IF NOT EXISTS recipeDetails(
     id_medication INT NOT NULL. 
     dose VARCHAR(100) NOT NULL, 
     route_administration ENUM ('Oral', 'Intramuscular', 'Intravenosa', 'Tópica', 'Sublingual', 'Oftálmica', 'Nasal', 'Rectal', 'Inhalatoria') NOT NULL, 
-    frequency VARCHAR(100) NOT NULL,
+    dosingFrequency VARCHAR(100) NOT NULL,
     duration VARCHAR(100) NOT NULL,
     CONSTRAINT fk_recipeDetail FOREIGN KEY (id_prescription) REFERENCES prescriptions(id_prescription) ON DELETE CASCADE,
     CONSTRAINT fk_medicationDetail FOREIGN KEY (id_medication) REFERENCES medications(id_medication) ON DELETE RESTRICT
+)ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS clinicalAuditLogs(
+    id_event BIGINT AUTO_INCREMENT PRIMARY KEY, 
+    id_user INT NOT NULL, 
+    medAction ENUM ('CONSULTA_EXPEDIENTE', 'EMISION_RECETA', 'REIMPRESION_RECETA', 'EXPORTACION_DATOS') NOT NULL,
+    affectedEntity VARCHAR(50) NOT NULL,
+    id_affected_registry INT NOT NULL,
+    details VARCHAR(255) NULL,
+    date_hour TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_userauditLogs FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE RESTRICT
 )ENGINE=InnoDB;
