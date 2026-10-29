@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelizeConnection from "../conf/sequelize.connection";
+import sequelizeConnection from "../conf/sequelize.connection.ts";
 
 const sequelize = sequelizeConnection.getSequelize();
 

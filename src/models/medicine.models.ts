@@ -3,7 +3,7 @@ import sequelizeConnection from "../conf/sequelize.connection.ts";
 
 const sequelize = sequelizeConnection.getSequelize();
 
-interface Medicine extends Model {
+export interface MedicineInstance extends Model {
   id_medication: number;
   brand_name: string;
   generic_name: string;
@@ -11,7 +11,7 @@ interface Medicine extends Model {
   is_controlled: boolean;
 }
 
-const Medicine = sequelize.define<Medicine>(
+const Medicine = sequelize.define<MedicineInstance>(
   "Medicine",
   {
     id_medication: {
@@ -20,15 +20,15 @@ const Medicine = sequelize.define<Medicine>(
       autoIncrement: true,
     },
     brand_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(120),
       allowNull: false,
     },
     generic_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(120),
       allowNull: false,
     },
     presentation: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
       unique: true,
     },
