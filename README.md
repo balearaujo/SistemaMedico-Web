@@ -1,28 +1,28 @@
-SISTEMA WEB DE RECETAS MEDICAS
+WEB-BASED PRESCRIPTION SYSTEM
 
-Este repositorio contiene el proyecto de Programación de Sistemas Web para la gestión rápida y eficiente de recetas médicas y expedientes de pacientes.
-1. DISEÑO DE ARQUITECTURA Y SEPARACIÓN DE RESPONSABILIADES
+This repository contains the Web Systems Programming project for the fast and efficient management of prescriptions and patient records.
+1. ARCHITECTURE DESIGN AND SEPARATION OF RESPONSIBILITIES
 
-   Para este proyecto utilizaremos una arquitectura basada en el patrón MVC (Modelo-Vista-Controlador) implementada a través de una API REST. La separción de responsabilidades será la siguiente:
-   * Modelos: Se encargarán exclusivamente de la conexión a la base de datos MySQL usando sentencias preparadas para evitar inyección SQL. Tendremos modelos como `PacienteModel` (para registrar y buscar pacientes), `CitaModel` (agenda) y `RecetaModel` (manejará la lógica para separar recetas de medicamentos controlados de las generales).
-   * Controladores: Contendrán la lógica de negocio. Por ejemplo, el `RecetaController` recibirá los datos, validará la información y ordenará la creación del PDF; el `AuthController` validará los inicios de sesión y bloqueará la cuenta tras 5 intentos fallidos.
-   * Rutas: Definirán los endpoints del sistema (por ejemplo: `/api/pacientes`).
-   * MiddleWares: Actuarán como filtros de seguridad antes de llegar a los controladores. Tendremos un `authMiddleWare` para verificar que la sesión esté activa y un `roleMiddleware` para asegurar que la secretaria no pueda emitir recetas.
+   For this project, we will use an architecture based on the MVC (Model-View-Controller) pattern implemented via a REST API. The separation of responsibilities will be as follows:
+   * Models: These will be exclusively responsible for connecting to the MySQL database using prepared statements to prevent SQL injection. We will have models such as `PatientModel` (for registering and searching for patients), `AppointmentModel` (schedule), and `PrescriptionModel` (which will handle the logic for distinguishing controlled-substance prescriptions from general prescriptions).
+   * Controllers: These will contain the business logic. For example, the `PrescriptionController` will receive the data, validate the information, and trigger the creation of the PDF; the `AuthController` will validate logins and lock the account after 5 failed attempts.
+   * Routes: These will define the system’s endpoints (for example: `/api/patients`).
+   * Middleware: These will act as security filters before data reaches the controllers. We will have an `authMiddleware` to verify that the session is active and a `roleMiddleware` to ensure that the secretary cannot issue prescriptions.
 
-  ESTRUCTURA DE CARPETAS PROPUESTA:
-  * `/docs`: Documentación del proyecto (PDFs, diagramas ER, Casos de Uso).
-  * `/src/controllers`: Lógica de negocio de la aplicación.
-  * `/src/models`: Consultas y conexión a la base de datos.
-  * `/src/routes`: Definición de endpoints HTTP.
-  * `/src/middlewares`: Filtros de seguridad y validación de roles.
-    
-3. PRUEBAS DE SEGURIDAD
-   De acuerdo con los requisitos de seguridad planteados, estos son los casos de prueba previstos para validar la protección del sistema:
+  PROPOSED FOLDER STRUCTURE:
+  * `/docs`: Project documentation (PDFs, ER diagrams, use cases).
+  * `/src/controllers`: Application business logic.
+  * `/src/models`: Database queries and connections.
+  * `/src/routes`: Definition of HTTP endpoints.
+  * `/src/middlewares`: Security filters and role validation.
 
-| ID Prueba | Escenario a probar | Resultado Esperado |
+3. SECURITY TESTS
+   In accordance with the security requirements outlined, these are the test cases planned to validate the system’s security:
+
+| Test ID | Test Scenario | Expected Result |
 | :--- | :--- | :--- |
-| **SEC-01** | Un usuario intenta iniciar sesión con contraseña incorrecta 5 veces seguidas. | El sistema bloquea temporalmente la cuenta y deniega el acceso. |
-| **SEC-02** | La secretaria intenta acceder mediante la URL a la ruta de emitir receta médica. | El sistema rechaza la petición por falta de permisos (Control de acceso por rol). |
-| **SEC-03** | Un atacante intenta inyectar código SQL en el buscador de pacientes. | El sistema procesa el texto como una simple cadena gracias a las sentencias preparadas; no se ejecuta código maligno. |
-| **SEC-04** | Un usuario deja su sesión abierta y sin actividad por un periodo prolongado. | El sistema expira la sesión automáticamente y pide volver a iniciar sesión. |
-| **SEC-05** | Se intenta acceder al sistema a través de HTTP normal en lugar de HTTPS. | El sistema fuerza la redirección a HTTPS para proteger los datos en tránsito. |
+| **SEC-01** | A user attempts to log in with an incorrect password 5 times in a row. | The system temporarily locks the account and denies access. |
+| **SEC-02** | The secretary attempts to access the prescription issuance route via the URL. | The system rejects the request due to lack of permissions (role-based access control). |
+| **SEC-03** | An attacker attempts to inject SQL code into the patient search function. | The system processes the text as a simple string thanks to prepared statements; no malicious code is executed. |
+| **SEC-04** | A user leaves their session open and inactive for an extended period. | The system automatically expires the session and prompts the user to log in again. |
+| **SEC-05** | An attempt is made to access the system via standard HTTP instead of HTTPS. | The system forces a redirect to HTTPS to protect data in transit. |
