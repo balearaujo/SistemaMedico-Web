@@ -5,10 +5,10 @@ const sequelize = sequelizeConnection.getSequelize();
 
 interface Medicine extends Model {
   id_medication: number;
-  brandName: string;
-  genericName: string;
+  brand_name: string;
+  generic_name: string;
   presentation: string;
-  is_Controlled: boolean;
+  is_controlled: boolean;
 }
 
 const Medicine = sequelize.define<Medicine>(
