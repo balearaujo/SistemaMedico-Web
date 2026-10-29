@@ -1,6 +1,7 @@
 **WEB-BASED PRESCRIPTION SYSTEM**
 
 This repository contains the Web Systems Programming project for the fast and efficient management of prescriptions and patient records.
+
 **1. ARCHITECTURE DESIGN AND SEPARATION OF RESPONSIBILITIES**
 
    For this project, we will use an architecture based on the MVC (Model-View-Controller) pattern implemented via a REST API. The separation of responsibilities will be as follows:
