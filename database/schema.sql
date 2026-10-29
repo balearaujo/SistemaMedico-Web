@@ -2,8 +2,8 @@
 -- Responsable: Abisag Lucero Martínez Martínez
 -- Cubre: Modelo ER. RF-01 a RF-24, RS-01, RS-06, RS-07
 
-CREATE DATABASE IF NOT EXISTS system_recipes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE system_recipes;
+CREATE DATABASE IF NOT EXISTS system_prescriptions CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE system_prescriptions;
 
 CREATE TABLE IF NOT EXISTS users (
     id_user INT AUTO_INCREMENT PRIMARY KEY, 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS doctors(
     office_phone VARCHAR(20) NOT NULL,
     whatsapp VARCHAR(20) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
     CONSTRAINT fk_doctor_user FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE RESTRICT
 ) ENGINE= InnoDB;
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS patients (
 )ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS medical_appointments(
-    id_medApp INT AUTO_INCREMENT PRIMARY KEY,
+    id_med_app INT AUTO_INCREMENT PRIMARY KEY,
     id_patient INT NOT NULL,
     date_app DATE NOT NULL,
     hour_app TIME NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS medications(
     brand_name VARCHAR(120) NOT NULL, 
     generic_name VARCHAR(120) NOT NULL, 
     presentation VARCHAR(100) NOT NULL, 
-    is_Controlled BOOLEAN NOT NULL DEFAULT FALSE, 
+    is_controlled BOOLEAN NOT NULL DEFAULT FALSE, 
     CONSTRAINT uq_medication_brand_pres UNIQUE (brand_name, presentation),
     INDEX idx_brand_name (brand_name),
     INDEX idx_generic_name (generic_name)
