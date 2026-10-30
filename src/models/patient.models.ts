@@ -8,7 +8,7 @@ export interface PatientInstance extends Model{
     full_name: string;
     birthdate: Date;
     contact: string;
-    opening_date: Date;
+    opening_date?: Date;
 }
 
 const Patient = sequelize.define<PatientInstance>(
@@ -31,6 +31,10 @@ const Patient = sequelize.define<PatientInstance>(
             type: DataTypes.STRING(30),
             allowNull: false,
         },
+        opening_date:{
+            type:DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+        }
     },
     {
         tableName: "patients",
