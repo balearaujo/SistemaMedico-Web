@@ -2,8 +2,6 @@ import express, { Router } from "express";
 
 interface serverOptions {
     port: number;
-}
-interface serverOptions {
     routes: Router;
 }
 
@@ -13,7 +11,7 @@ export class Server{
     constructor(options: serverOptions){
         this.port = options.port;
         this.server.use(express.json());
-        this.server.use('/api',options.routes);
+        this.server.use('/api', options.routes);
     }
 
     start(){
