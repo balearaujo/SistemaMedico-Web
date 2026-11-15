@@ -7,7 +7,7 @@ export class MedicineController {
 
     public async searchMedicines (req: Request, res: Response) {
         try {
-            const query = req.query.q as string;
+            const query = (req.query.q as string)?.trim();
             let medicines;
             if(query){
                 medicines = await Medicine.findAll({
