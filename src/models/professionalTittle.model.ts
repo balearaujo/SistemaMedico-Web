@@ -12,7 +12,7 @@ export interface ITitles extends Model {
 }
 
 const professional_title = sequelize.define<ITitles>(
-    "Medicine",
+    "professional_titles",
         {
         id_title: {
         type: DataTypes.INTEGER,

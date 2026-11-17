@@ -7,23 +7,13 @@ import Consultation from "../models/consultation.models.ts";
 import Prescription from "../models/prescription.models.ts";
 import PrescriptionDetail from "../models/prescriptionDetail.models.ts";
 import AuditLog from "../models/auditLog.models.ts";
+import Doctor  from "../models/doctor.models.ts";
+import professional_title from "../models/professionalTittle.model.ts";
 
 setupAssociations();
 
 const sequelize = sequelizeConnection.getSequelize();
 
-const DEFAULT_MEDICAL_SNAPSHOT = {
-  full_name: "Dr. Alejandro Martínez Gómez",
-  address: "Av. Universidad 1001, Fracc. Bosques del Prado, Aguascalientes, Ags.",
-  office: "Torre Médica Consultorio 304",
-  office_phone: "4499123456",
-  whatsapp: "4491987654",
-  email: "dr.martinez@clinicamedica.mx",
-  titles: [
-    { title: "Médico Cirujano", university: "UAA", license: "8451236" },
-    { title: "Especialidad en Medicina Interna", university: "UNAM", license: "10948273" },
-  ],
-};
 
 export class PrescriptionController {
   constructor() {}
@@ -112,6 +102,8 @@ export class PrescriptionController {
   public async createPrescription(req: Request, res: Response) {
     const transaction = await sequelize.transaction();
     try {
+
+      //despues se usa con la bd cuando tengamos el auth
       const {
         id_patient,
         id_doctor = 1,
@@ -123,7 +115,7 @@ export class PrescriptionController {
         body_temperature = null,
         body_weight = null,
         body_height = null,
-        medical_snapshot = DEFAULT_MEDICAL_SNAPSHOT,
+        medical_snapshot,
         items,
       } = req.body;
 
@@ -133,6 +125,30 @@ export class PrescriptionController {
           message: "id_patient, diagnosis and at least one medication item are required",
         });
       }
+
+      const doctor: any = await Doctor.findByPk(Number(id_doctor), {
+        include: [{ model: professional_title, as: "titles" }],
+        transaction,
+      });
+
+      if (!doctor) {
+        await transaction.rollback();
+        return res.status(404).json({ message: "Doctor not found" });
+      }
+
+      const resolvedSnapshot = medical_snapshot || {
+        full_name: doctor.full_name,
+        address: doctor.address,
+        office: doctor.office,
+        office_phone: doctor.office_phone,
+        whatsapp: doctor.whatsapp,
+        email: doctor.email,
+        titles: (doctor.titles || []).map((t: any) => ({
+          title: t.title,
+          university: t.university,
+          license: t.professional_license,
+        })),
+      };
 
       const patientExists = await Patient.findByPk(Number(id_patient), { transaction });
       if (!patientExists) {
@@ -197,7 +213,7 @@ export class PrescriptionController {
             id_consultation: newConsultation.id_consultation,
             id_origin_prescription: null,
             is_controlled: false,
-            medical_snapshot,
+            medical_snapshot: resolvedSnapshot,
           },
           { transaction }
         );
@@ -243,7 +259,7 @@ export class PrescriptionController {
             id_consultation: newConsultation.id_consultation,
             id_origin_prescription: originPrescriptionId,
             is_controlled: true,
-            medical_snapshot,
+            medical_snapshot: resolvedSnapshot,
           },
           { transaction }
         );

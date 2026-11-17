@@ -3,7 +3,8 @@ import Medicine from "./medicine.models.ts";
 import Consultation from "./consultation.models.ts";
 import Prescription from "./prescription.models.ts";
 import PrescriptionDetail from "./prescriptionDetail.models.ts";
-
+import Doctor from "./doctor.models.ts";
+import professional_title from "./professionalTittle.model.ts";
 let associationsInitialized = false;
 
 export function setupAssociations(): void{
@@ -52,6 +53,16 @@ export function setupAssociations(): void{
     PrescriptionDetail.belongsTo(Medicine, {
         foreignKey: "id_medication",
         as: "medication",
+    });
+
+    Doctor.hasMany(professional_title, {
+    foreignKey: "id_doctor",
+    as: "titles",
+    });
+
+    professional_title.belongsTo(Doctor, {
+    foreignKey: "id_doctor",
+    as: "doctor",
     });
 
     associationsInitialized = true;

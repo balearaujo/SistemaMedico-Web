@@ -15,7 +15,7 @@ export interface IDoctor extends Model {
 }
 
 const Doctor = sequelize.define<IDoctor>(
-    "Medicine",
+    "Doctor",
     {
         id_doctor: {
         type: DataTypes.INTEGER,
